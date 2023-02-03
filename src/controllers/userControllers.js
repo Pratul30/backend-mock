@@ -1,57 +1,152 @@
 const services = require('../services/userServices');
+const HTTPError = require('../utils/error/HTTPError');
 
 const createUser = async (req, res) => {
-    const tasksDb = await services.createUser(req.body);
-    res.status(201).send(tasksDb);
+    try{
+        const tasksDb = await services.createUser(req.body);
+        //console.log(tasksDb);
+        if(!tasksDb){
+            throw new HTTPError('User already exists');
+        }
+        res.status(201).send(tasksDb);
+    }catch(error){
+        if(error instanceof HTTPError){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 const getUserDetails = async (req, res) => {
-    const {userId} = req.params;
-    const tasksDb = await services.findUserTasks(userId);
-    res.status(200).send(tasksDb);
+    try{
+        const {userId} = req.params;
+        const tasksDb = await services.findUserTasks(userId);
+        if(!tasksDb){
+            throw new HTTPError('User not found');
+        }
+        res.status(200).send(tasksDb);
+    }catch(error){
+        if(error instanceof HTTPError){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 const getUsers = async (req, res) => {
-    const tasksDb = await services.findUser();
-    res.status(200).send(tasksDb);
+    try{
+        const tasksDb = await services.findUser();
+        if(!tasksDb){
+            throw new HTTPError('User not found');
+        }
+        res.status(200).send(tasksDb);
+    }catch(error){
+        if(error instanceof HTTPError){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 const createTask = async (req, res) => {
-    const {userId} = req.params;
-    const tasksDb = await services.createTask(req.body, userId);
-    res.status(201).send(tasksDb);
+    try{
+        const {userId} = req.params;
+        const tasksDb = await services.createTask(req.body, userId);
+        if(!tasksDb){
+            throw new HTTPError('User not found');
+        }
+        res.status(201).send(tasksDb);
+    }catch(error){
+        if(error instanceof HTTPError){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 const getTasks = async (req, res) => {
-    const {userId} = req.params;
-    const tasksDb = await services.findUserTasks(userId);
-    res.status(200).send(tasksDb);
+    try{
+        const {userId} = req.params;
+        const tasksDb = await services.findUserTasks(userId);
+        if(!tasksDb){
+            throw new HTTPError('User not found');
+        }
+        res.status(200).send(tasksDb);
+    }catch(error){
+        if(error instanceof HTTPError){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 const getTaskById = async (req, res) => {
-    const {taskId, userId} = req.params;
-    const tasksDb = await services.findTaskById(taskId, userId);
-    res.status(200).send(tasksDb);
+    try{
+        const {taskId, userId} = req.params;
+        const tasksDb = await services.findTaskById(taskId, userId);
+        res.status(200).send(tasksDb);
+    }catch(error){
+        if(error instanceof Error){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 const patchTaskById = async (req, res) => {
-    const {title} = req.body;
-    const {taskId, userId} = req.params;
-    const tasksDb = await services.patchTaskById(title, taskId, userId);
-    res.status(200).send(tasksDb);
+    try{
+        const {title} = req.body;
+        const {taskId, userId} = req.params;
+        const tasksDb = await services.patchTaskById(title, taskId, userId);
+        if(!tasksDb){
+            throw new HTTPError('User not found');
+        }
+        res.status(200).send(tasksDb);
+    }catch(error){
+        if(error instanceof Error){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 
 };
 
 const deleteUser = async (req, res) => {
-    const {userId} = req.params;
-    const tasksDb = await services.deleteUser(userId);
-    res.status(200).send(tasksDb);
+    try{
+        const {userId} = req.params;
+        const tasksDb = await services.deleteUser(userId);
+        if(!tasksDb){
+            throw new HTTPError('User not found');
+        }
+        res.status(200).send(tasksDb);
+    }catch(error){
+        if(error instanceof Error){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 const deleteTaskById = async (req, res) => {
-    const {taskId, userId} = req.params;
-    const tasksDb = await services.deleteTaskById(taskId, userId);
-    res.status(200).send(tasksDb);
+    try{
+        const {taskId, userId} = req.params;
+        const tasksDb = await services.deleteTaskById(taskId, userId);
+        res.status(200).send(tasksDb);}
+    catch(error){
+        if(error instanceof Error){
+            res.status(400).send(error.message);
+        }else{
+            res.status(500).send('Internal server error');
+        }
+    }
 };
 
 module.exports = {
